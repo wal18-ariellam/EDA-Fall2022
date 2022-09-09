@@ -8,3 +8,20 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+### My Git settings:
+user.name=wal18-ariellam
+user.email=wal18@duke.edu
+
+### My Git remote settings:
+origin  https://github.com/wal18-ariellam/EDA-Fall2022 (fetch)
+origin  https://github.com/wal18-ariellam/EDA-Fall2022 (push)
+upstream        https://github.com/ENV872/EDA-Fall2022 (fetch)
+upstream        DISABLE (push)
+
+### My Git changes: 
+20a7b70 (HEAD -> main, origin/main, origin/HEAD) Add data files
+f992081 Create Assignments folder
+972c063 Create Lessons folder
+34b6cc8 Create .gitignore
+a07d95c Initial commit
