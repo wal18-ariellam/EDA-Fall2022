@@ -1,6 +1,6 @@
 ---
 title: "Assignment 2: Coding Basics"
-author: "Student Name"
+author: "Ariel Lam"
 output: pdf_document
 geometry: margin=2.54cm
 editor_options: 
@@ -32,11 +32,12 @@ This exercise accompanies the lessons in Environmental Data Analytics on coding 
 
 ```{r}
 #1. 
-
+Sequence_of_four <- seq(1,100,4) #assign sequence to a variable
 #2. 
-
+mean(Sequence_of_four) #calculate the mean of the variable/ sequence
+median(Sequence_of_four) #calculate the median of the variable/ sequence
 #3. 
-
+mean(Sequence_of_four) > median(Sequence_of_four) #ask if the mean of the sequence is greater than the median. boolean result.
 ```
 
 ## Basics Day 2
@@ -50,6 +51,10 @@ This exercise accompanies the lessons in Environmental Data Analytics on coding 
 8.  Label the columns of your data frame with informative titles.
 
 ```{r}
+name <- c("Bob", "Rob", "Cob", "Gob", "Zob") #character vector
+test_score <- c(5,20,8,99,60) # integer vector
+pass <- c(FALSE, FALSE, FALSE, TRUE, TRUE) #logical vector
+class_scores <- data.frame(name, test, pass)
 
 ```
 
@@ -62,6 +67,7 @@ This exercise accompanies the lessons in Environmental Data Analytics on coding 
 11. Apply your function to the vector with test scores that you created in number 5.
 
 ```{r}
+
 
 ```
 
