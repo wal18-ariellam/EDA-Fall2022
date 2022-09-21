@@ -51,16 +51,20 @@ mean(Sequence_of_four) > median(Sequence_of_four) #ask if the mean of the sequen
 8.  Label the columns of your data frame with informative titles.
 
 ```{r}
-name <- c("Bob", "Rob", "Cob", "Gob", "Zob") #character vector
-test_score <- c(5,20,8,99,60) # integer vector
-pass <- c(FALSE, FALSE, FALSE, TRUE, TRUE) #logical vector
-class_scores <- data.frame(name, test, pass)
+name <- c("Bob", "Rob", "Cob", "Gob") #character vector
+test_score <- c(5,20,8,99) # integer vector
+pass <- c(FALSE, FALSE, FALSE, TRUE) #logical vector
+class_scores <- data.frame(name, test_score, pass)
+names(class_scores)[names(class_scores) == 'name'] <- 'Student Name'
+names(class_scores)[names(class_scores) == 'test_score'] <- 'Test Score'
+names(class_scores)[names(class_scores) == 'pass'] <- 'Pass?'
+
 
 ```
 
 9.  QUESTION: How is this data frame different from a matrix?
 
-> Answer:
+> Answer: Data frame is different because it can store different classes of data. In this case, the data frame stores three different classes of data (logical, character, and integer). A matrix will only stores one class. 
 
 10. Create a function with an if/else statement. Your function should take a **vector** of test scores and print (not return) whether a given test score is a passing grade of 50 or above (TRUE or FALSE). You will need to choose either the `if` and `else` statements or the `ifelse` statement. 
 
@@ -68,9 +72,13 @@ class_scores <- data.frame(name, test, pass)
 
 ```{r}
 
+passing_grade <- function(x) {
+  ifelse(x<50, "True", "False")}
+
+passing_grade(test_score)
 
 ```
 
 12. QUESTION: Which option of `if` and `else` vs. `ifelse` worked? Why?
 
-> Answer:
+> Answer: ifelse worked as it can pass vectors. The separate 'if' and 'else' functions can only pass separate integers. 
