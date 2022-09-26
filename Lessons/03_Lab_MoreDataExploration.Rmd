@@ -123,7 +123,8 @@ Use the common functions `summary` and `sd` to obtain basic data summaries of th
 
 ```{r DataExercise-1d}
 summary(Temperature)
-sd(Temperature)
+sd(Temperature$`High Temp (F)`)
+summary(Temperature$`High Temp (C)`)
 ```
 
 ### Date objects
