@@ -57,6 +57,7 @@ Litter <- read.csv("./Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", strin
 ```{r}
 dim(Neonics)
 ```
+> Answer: 4623 rows, 30 columns
 
 6.  Using the `summary` function on the "Effect" column, determine the most common effects that are studied. Why might these effects specifically be of interest?
 
@@ -64,7 +65,7 @@ dim(Neonics)
 summary(Neonics$Effect)
 ```
 
-> Answer: These might be of interest as it reflects the behavior of the insecticide on insects and the potential effectiveness of Neonicotinoids on agricultural uses. 
+> Answer: These might be of interest as it reflects the behavior/ impact of the insecticide on insects and the potential effectiveness of Neonicotinoids on agricultural uses. 
 
 7.  Using the `summary` function, determine the six most commonly studied species in the dataset (common name). What do these species have in common, and why might they be of interest over other insects? Feel free to do a brief internet search for more information if needed.
 
@@ -119,7 +120,7 @@ ggplot(Neonics, aes(y=Endpoint))+ geom_bar()
 class(Litter$collectDate)
 Litter$collectDate <- as.Date(Litter$collectDate, format="%Y-%m-%d")
 
-
+unique(Litter$collectDate, "Y%"= "2018", "%m"="08")
 ```
 
 13. Using the `unique` function, determine how many plots were sampled at Niwot Ridge. How is the information obtained from `unique` different from that obtained from `summary`?
