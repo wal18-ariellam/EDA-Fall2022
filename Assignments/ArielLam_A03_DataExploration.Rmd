@@ -104,43 +104,55 @@ Interpret this graph. What are the most common test locations, and do they diffe
 11. Create a bar graph of Endpoint counts. What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix for more information.
 
 ```{r}
+ggplot(Neonics, aes(y=Endpoint))+ geom_bar()
 
 ```
 
-> Answer:
+> Answer: Most common is NOEL and LOEL. NOEL stands for "No-observable-effect-level: highest dose (concentration) producing effects not significantly different from responses of controls according to author's reported statistical tests". LOEL stands for "lowest-observable-effect-level: lowest (concentration) producing effects that are significantly different". 
+
 
 ## Explore your data (Litter)
 
 12. Determine the class of collectDate. Is it a date? If not, change to a date and confirm the new class of the variable. Using the `unique` function, determine which dates litter was sampled in August 2018.
 
 ```{r}
+class(Litter$collectDate)
+Litter$collectDate <- as.Date(Litter$collectDate, format="%Y-%m-%d")
+
 
 ```
 
 13. Using the `unique` function, determine how many plots were sampled at Niwot Ridge. How is the information obtained from `unique` different from that obtained from `summary`?
 
 ```{r}
-
+unique(Litter$plotID)
+#summary(Litter$plotID)
 ```
 
-> Answer:
+> Answer: 12 plot IDs. The unique function identifies the distinct categories within the column whilst the summary generates the count within each distinct categories
 
 14. Create a bar graph of functionalGroup counts. This shows you what type of litter is collected at the Niwot Ridge sites. Notice that litter types are fairly equally distributed across the Niwot Ridge sites.
 
 ```{r}
+ggplot(Litter, aes(y=functionalGroup)) +geom_bar()
 
 ```
 
 15. Using `geom_boxplot` and `geom_violin`, create a boxplot and a violin plot of dryMass by functionalGroup.
 
 ```{r}
+ggplot(Litter, aes(y=dryMass, x=functionalGroup)) +geom_boxplot()
+
+ggplot(Litter, aes(y= dryMass, x=functionalGroup)) +geom_violin()
+
 
 ```
 
 Why is the boxplot a more effective visualization option than the violin plot in this case?
 
-> Answer:
+> Answer:The boxplots display outliers and the quartiles better than the violin plot. It is a lot easier to distinguish between the dryMass values compared to functional group in the boxplots and compare them than it is to the violine plot which does not show much. 
 
 What type(s) of litter tend to have the highest biomass at these sites?
 
-> Answer:
+> Answer:The Needles tend to have the highest biomass at these sites
+
