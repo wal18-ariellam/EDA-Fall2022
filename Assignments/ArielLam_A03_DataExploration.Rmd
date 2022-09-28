@@ -108,6 +108,7 @@ Interpret this graph. What are the most common test locations, and do they diffe
 
 ```{r}
 ggplot(Neonics, aes(y=Endpoint))+ geom_bar()
+# I chose to do a horizontal bar graph due to better aesthetics. 
 
 ```
 
