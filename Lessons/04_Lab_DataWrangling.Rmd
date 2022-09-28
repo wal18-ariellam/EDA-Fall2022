@@ -65,11 +65,12 @@ NTL.phys.data.JunethruOctober <- filter(NTL.phys.data, daynum %in% c(152:304))
 # Exercise 1: 
 # filter NTL.phys.data for the year 1999
 # what code do you need to use, based on the class of the variable?
-
+NTL.phys.data.year1999 <- filter(NTL.phys.data, year4 == 1999)
 
 # Exercise 2: 
 # filter NTL.phys.data for Tuesday Lake from 1990 through 1999.
-
+NTL.phys.data.tuesdaylake1990.1999 <- filter(NTL.phys.data, lakename == "Tuesday Lake" & year4 <=1999
+ & year4 >= 1990)
 
 ```
 Question: Why don't we filter using row numbers?
@@ -91,12 +92,19 @@ NTL.phys.data.processed <-
 
 #Exercise 3: Using a pipe filter NTL.phys.data for Tuesday Lake from 1990 through 1999 only for July 
 
+ex3 <- NTL.phys.data %>%
+  filter(lakename == "Tuesday Lake" & year4 <=1999& year4 >= 1990) %>%
+  mutate(month = month(sampledate)) %>%
+  filter(month== 07)
 
 
 
 
 #Exercise 4: Using the data from part 3, a pipe and the summarise() function find the mean surface temperature (hints: you will need to add another filter for depth==0). Make sure you eliminate NAs before computing the means
-
+ex4 <- ex3 %>%
+  filter(depth == 0) %>% 
+  drop_na(temperature_C) %>%
+  summarize(mean_surf_temp= mean(temperature_C))
   
 ```
 
@@ -107,6 +115,7 @@ For gather we will use `pivot_longer` and for spread we will use `pivot_wider`.
 ```{r}
 #Exercise 5: gather irradiance data (measured in the water column and measured on the deck of the sampling boat) into one column using pivot_longer
 
+NTL.phys.data.EX
 
 #Exercise 6: spread temperatureC into more than one column based on the depth
 
