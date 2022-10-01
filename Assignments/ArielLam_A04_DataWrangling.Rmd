@@ -1,6 +1,6 @@
 ---
 title: "Assignment 4: Data Wrangling"
-author: "Student Name"
+author: "Ariel Lam"
 output: pdf_document
 geometry: margin=2.54cm
 ---
@@ -34,7 +34,39 @@ The completed exercise is due on Friday, Oct7th @ 5:00pm.
 ```{r, message = FALSE}
 #1
 
+getwd()
+setwd("/Users/ariellam/Desktop/EDA-Fall2022")
+library(tidyverse)
+library(lubridate)
+EPA_O3_2018 <- read.csv("./Data/Raw/EPAair_O3_NC2018_raw.csv", stringsAsFactors = TRUE)
+EPA_O3_2019 <- read.csv("./Data/Raw/EPAair_O3_NC2019_raw.csv", stringsAsFactors = TRUE)
+EPA_PM25_2018<- read.csv("./Data/Raw/EPAair_PM25_NC2018_raw.csv", stringsAsFactors = TRUE)
+EPA_PM25_2019<- read.csv("./Data/Raw/EPAair_PM25_NC2019_raw.csv", stringsAsFactors = TRUE)
+
+
 #2
+#Ozone in 2018
+dim(EPA_O3_2018)
+colnames(EPA_O3_2018)
+glimpse(EPA_O3_2018)
+
+#Ozone in 2019
+dim(EPA_O3_2019)
+colnames(EPA_O3_2019)
+glimpse(EPA_O3_2019)
+
+
+#PM 25 in 2018
+dim(EPA_PM25_2018)
+colnames(EPA_PM25_2018)
+glimpse(EPA_PM25_2018)
+
+
+#PM 25 in 2019
+dim(EPA_PM25_2019)
+colnames(EPA_PM25_2019)
+glimpse(EPA_PM25_2019)
+
 ```
 
 ## Wrangle individual datasets to create processed files.
@@ -98,4 +130,4 @@ The completed exercise is due on Friday, Oct7th @ 5:00pm.
 
 14. Why did we use the function `drop_na` rather than `na.omit`?
 
-> Answer: 
+> Answer: The function drop na works to remove individual NA walues rather than na.omit which removes total rows if a cell has an NA in it. 
