@@ -125,8 +125,10 @@ write.csv(EPA_PM25_2019, row.names = FALSE,
 
 ```{r}
 #7
+air_quality <- rbind(EPA_O3_2018, EPA_O3_2019, EPA_PM25_2018, EPA_PM25_2019)
 
 #8
+air_quality <- filter(air_quality, Site.Name %in% c("Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue", "Clemmons Middle", "Mendenhall School", "Frying Pan Mountain","West Johnston Co.", "Garinger High School", "Castle Hayne", "Pitt Agri. Center", "Bryson City", "Millbrook School")) %>% group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>% summarize(Mean_AQI= mean(AQS_PARAMETER_DESC), Mean_Lat= mean(SITE_LATITUDE), Mean_Long= mean(SITE_LONGITUDDE))
 
 #9
 
