@@ -120,6 +120,7 @@ write.csv(EPA_PM25_2019, row.names = FALSE,
 * Hint: the dimensions of this dataset should be 14,752 x 9.
 
 9. Spread your datasets such that AQI values for ozone and PM2.5 are in separate columns. Each location on a specific date should now occupy only one row.
+
 10. Call up the dimensions of your new tidy dataset.
 11. Save your processed dataset with the following file name: "EPAair_O3_PM25_NC1718_Processed.csv"
 
@@ -128,13 +129,22 @@ write.csv(EPA_PM25_2019, row.names = FALSE,
 air_quality <- rbind(EPA_O3_2018, EPA_O3_2019, EPA_PM25_2018, EPA_PM25_2019)
 
 #8
-air_quality <- filter(air_quality, Site.Name %in% c("Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue", "Clemmons Middle", "Mendenhall School", "Frying Pan Mountain","West Johnston Co.", "Garinger High School", "Castle Hayne", "Pitt Agri. Center", "Bryson City", "Millbrook School")) %>% group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>% summarize(Mean_AQI= mean(AQS_PARAMETER_DESC), Mean_Lat= mean(SITE_LATITUDE), Mean_Long= mean(SITE_LONGITUDDE))
+air_quality <- filter(air_quality, Site.Name %in% c("Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue", "Clemmons Middle", "Mendenhall School", "Frying Pan Mountain","West Johnston Co.", "Garinger High School", "Castle Hayne", "Pitt Agri. Center", "Bryson City", "Millbrook School")) %>% group_by(Date, Site.Name, AQS_PARAMETER_DESC, COUNTY) %>%
+  summarise(mean_AQI= mean(DAILY_AQI_VALUE),
+            mean_Lat= mean(SITE_LATITUDE), 
+            mean_Long= mean(SITE_LONGITUDE)) %>% mutate(Month = month(Date)) %>% mutate(Year=year(Date))
 
 #9
+air.quality.spread <- spread(air_quality, AQS_PARAMETER_DESC, mean_AQI)
+#air.quality.spread <- pivot_wider(air_quality, names_from = AQS_PARAMETER_DESC, values_from = mean_AQI)
 
 #10
+dim(air.quality.spread)
 
 #11
+setwd("~/Desktop/EDA-Fall2022")
+write.csv(air.quality.spread, row.names = FALSE, 
+          file = "./Data/Processed/EPAair_O3_PM25_NC1718_Processed.csv")
 
 ```
 
@@ -146,8 +156,11 @@ air_quality <- filter(air_quality, Site.Name %in% c("Linville Falls", "Durham Ar
 
 ```{r}
 #12a
+EPA_Air_Quality_Summary <- air.quality.spread %>% group_by(Site.Name, Month, Year) %>%
+  summarise(Mean_Ozone_AQI= mean(Ozone), Mean_PM2.5_AQI= mean(PM2.5) )
 
 #12b
+EPA_Air_Quality_Summary <-  EPA_Air_Quality_Summary %>% drop_na(Mean_Ozone_AQI, Mean_PM2.5_AQI)
 
 #13
 
