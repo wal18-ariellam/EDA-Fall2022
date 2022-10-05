@@ -29,9 +29,14 @@ knitr::opts_chunk$set(tidy.opts=list(width.cutoff=80), tidy=TRUE)
 ```{r, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(ggridges)
+#install.packages("viridis")
 library(viridis)
+#install.packages("RColorBrewer")
 library(RColorBrewer)
+#install.packages("colormap")
+
 library(colormap)
+
 ```
 
 ## Expression function and Saving plots
@@ -75,7 +80,8 @@ Exercise: build your own scatterplots of PeterPaul.chem.nutrients
 # Color your points by year, and facet by lake in two rows.
 # Change the ylab name
 
-
+PeterPaul.chem.nutrients.surface <- PeterPaul.chem.nutrients %>% filter(depth==0)
+plot1 <- ggplot(PeterPaul.chem.nutrients.surface, aes(x=daynum, y=temperature_C, color=year4))+geom_point()+ facet_wrap(PeterPaul.chem.nutrients.surface$lakename) + ylab("Temperature °C")
 #2. 
 # Plot temperature by date. Color your points by depth.
 # Change the size of your point to 0.5
@@ -83,7 +89,8 @@ Exercise: build your own scatterplots of PeterPaul.chem.nutrients
 # Change x axis to include marker/labels every 5 years
 
 
-
+plot2 <- ggplot(PeterPaul.chem.nutrients, aes(x=sampledate, y=temperature_C))+geom_point(aes( color=depth),size=0.5)+scale_color_viridis(option="magma", direction=-1)+ scale_x_date(date_breaks = "5 years", date_labels="%Y")+xlab("")+ylab("Temperature")
+print(plot2)
 
 ```
 ## Plotting the relationship between two continuous variables: Scatterplot
