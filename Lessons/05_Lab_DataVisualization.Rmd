@@ -105,7 +105,7 @@ Exercise: Plot relationships between air quality measurements
 # Add a line of best fit for the linear regression of these variables.
 
 
-
+ggplot(EPAair, aes(x=PM2.5, y=Ozone))+geom_point(aes(color=meanLat),alpha=.5)+ geom_smooth(method=lm, color="red")
 
 ```
 
@@ -119,7 +119,7 @@ Exercise: Plot distributions of AQI values for EPAair.
 # Create several types of plots depicting PM2.5, divided by year. 
 # Choose which plot displays the data best and justify your choice. 
 
-
+ggplot(EPAair, aes(x=Month, y= PM2.5, color= COUNTY))+geom_bar(stat="identity") +facet_wrap(EPAair$Year)
 
 ```
 
