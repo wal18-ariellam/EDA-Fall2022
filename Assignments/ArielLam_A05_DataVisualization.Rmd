@@ -1,6 +1,6 @@
 ---
 title: "Assignment 5: Data Visualization"
-author: "Student Name"
+author: "Ariel Lam"
 output: pdf_document
 geometry: margin=2.54cm
 ---
@@ -10,7 +10,7 @@ geometry: margin=2.54cm
 #For it to work, the "formatR" package needs to be installed
 
 #install.packages('formatR')
-knitr::opts_chunk$set(tidy.opts=list(width.cutoff=80), tidy=TRUE)
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=45), tidy=TRUE)
 ```
 
 ## OVERVIEW
@@ -39,9 +39,21 @@ the processed data file for the Niwot Ridge litter dataset (use the
 2. Make sure R is reading dates as date format; if not change the format to date.
 
 ```{r}
-#1 
 
+#1 
+getwd()
+setwd("/Users/ariellam/Desktop/EDA-Fall2022")
+library(tidyverse)
+library(lubridate)
+library(cowplot)
+
+PeterPaul <- read.csv("./Data/Processed/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv", stringsAsFactors = TRUE)
+NiwotRidge <- read.csv("./Data/Processed/NEON_NIWO_Litter_mass_trap_Processed.csv", stringsAsFactors = TRUE)
 #2 
+
+PeterPaul$sampledate<- as.Date(PeterPaul$sampledate, format = "%Y-%m-%d")
+NiwotRidge$collectDate<- as.Date(NiwotRidge$collectDate, format = "%Y-%m-%d")
+
 
 ```
 ## Define your theme
@@ -49,6 +61,9 @@ the processed data file for the Niwot Ridge litter dataset (use the
 
 ```{r}
 #3
+assignment_theme <- theme_light(base_size = 14) +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "right")
 
 ```
 
@@ -64,6 +79,7 @@ limits using `xlim()` and/or `ylim()`).
 
 ```{r}
 #4
+ggplot(PeterPaul, aes(x=po4, y =tp_ug))+ assignment_theme +geom_point(aes(color=lakename))+xlim(c(0,55))+ geom_smooth(method=lm, color="black")+ylab("Total Phosphorus (ug)")+xlab("Phosphate")+ggtitle("Total Phosphorus and Phosphate in Peter and Paul Lakes")
 
 ```
 
@@ -78,7 +94,22 @@ see <https://r-lang.com/month-abb-in-r-with-example>
 
 ```{r}
 #5
+temperature_boxplot <-
+  ggplot(PeterPaul, aes(x = month, y = temperature_C)) +
+  geom_boxplot(aes(color = lakename))+ assignment_theme+ylab("Temperature (C)")+xlab("Month")+ggtitle("Temperature Distribution")
+print(temperature_boxplot)
 
+TP_boxplot <-
+  ggplot(PeterPaul, aes(x = month, y = tp_ug)) +
+  geom_boxplot(aes(color = lakename))+ assignment_theme+ylab("TP (ug)")+xlab("Month")+ggtitle("Total Phosphorus (ug) Distribution")
+print(TP_boxplot)
+
+TN_boxplot <-
+  ggplot(PeterPaul, aes(x = month, y = tn_ug)) +
+  geom_boxplot(aes(color = lakename))+ assignment_theme+ylab("TN (ug)")+xlab("Month")+ggtitle("Total Nitrogen (ug) Distribution")
+print(TN_boxplot)
+
+plot_grid(temperature_boxplot, TP_boxplot, TN_boxplot, nrow = 3, align = 'h', rel_heights = c(1, 1))
 ```
 
 Question: What do you observe about the variables of interest over seasons 
