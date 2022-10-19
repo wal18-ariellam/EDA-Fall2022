@@ -94,22 +94,26 @@ see <https://r-lang.com/month-abb-in-r-with-example>
 
 ```{r}
 #5
+PeterPaul$month <- factor(PeterPaul$month,levels=c(1:12))
+
 temperature_boxplot <-
-  ggplot(PeterPaul, aes(x = month, y = temperature_C)) +
+  ggplot(PeterPaul, aes(x = month.abb[month], y = temperature_C)) +
   geom_boxplot(aes(color = lakename))+ assignment_theme+ylab("Temperature (C)")+xlab("Month")+ggtitle("Temperature Distribution")
 print(temperature_boxplot)
 
 TP_boxplot <-
-  ggplot(PeterPaul, aes(x = month, y = tp_ug)) +
+  ggplot(PeterPaul, aes(x = month.abb[month], y = tp_ug)) +
   geom_boxplot(aes(color = lakename))+ assignment_theme+ylab("TP (ug)")+xlab("Month")+ggtitle("Total Phosphorus (ug) Distribution")
 print(TP_boxplot)
 
 TN_boxplot <-
-  ggplot(PeterPaul, aes(x = month, y = tn_ug)) +
+  ggplot(PeterPaul, aes(x = month.abb[month], y = tn_ug)) +
   geom_boxplot(aes(color = lakename))+ assignment_theme+ylab("TN (ug)")+xlab("Month")+ggtitle("Total Nitrogen (ug) Distribution")
 print(TN_boxplot)
 
-plot_grid(temperature_boxplot, TP_boxplot, TN_boxplot, nrow = 3, align = 'h', rel_heights = c(1, 1))
+
+
+plot_grid(temperature_boxplot + theme(legend.position="none",axis.text.x = element_text(angle = 60, hjust = 1))+ggtitle(NULL), TP_boxplot + theme(legend.position="none",axis.text.x = element_text(angle = 60, hjust = 1))+ggtitle(NULL), TN_boxplot+ theme(legend.position="none",axis.text.x = element_text(angle = 60, hjust = 1))+ggtitle(NULL), nrow = 1,align = 'h')+scale_x_discrete(drop=FALSE)
 ```
 
 Question: What do you observe about the variables of interest over seasons 
@@ -128,7 +132,11 @@ three facets rather than separated by color.
 ```{r}
 #6
 
+ggplot(subset(NiwotRidge, functionalGroup="Needles"), aes(x=collectDate, y =dryMass))+ assignment_theme +geom_point(aes(color=nlcdClass))+ ylab("Dry Mass")+xlab("Collection Date")
+
 #7
+ggplot(subset(NiwotRidge, functionalGroup="Needles"), aes(x=collectDate, y =dryMass))+ assignment_theme +geom_point()+ ylab("Dry Mass")+xlab("Collection Date")+facet_wrap(~nlcdClass)
+
 
 
 ```
