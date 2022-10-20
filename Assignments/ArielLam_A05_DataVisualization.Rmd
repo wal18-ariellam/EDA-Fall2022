@@ -10,7 +10,9 @@ geometry: margin=2.54cm
 #For it to work, the "formatR" package needs to be installed
 
 #install.packages('formatR')
-knitr::opts_chunk$set(tidy.opts=list(width.cutoff=45), tidy=TRUE)
+#library(formatR)
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=20), tidy=TRUE)
+
 ```
 
 ## OVERVIEW
@@ -31,10 +33,11 @@ The completed exercise is due on Friday, Oct 14th @ 5:00pm.
 ## Set up your session 
 1. Set up your session. Verify your working directory and load the tidyverse, 
 lubridate, & cowplot packages. Upload the NTL-LTER processed data files for  
-nutrients and chemistry/physics for Peter and Paul Lakes (use the tidy 
-[`NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv`] version) and 
-the processed data file for the Niwot Ridge litter dataset (use the
-[`NEON_NIWO_Litter_mass_trap_Processed.csv`] version). 
+nutrients and chemistry/physics for Peter and Paul Lakes 
+(use the tidy 
+[`NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv`] version) 
+and the processed data file for the Niwot Ridge litter dataset 
+(use the [`NEON_NIWO_Litter_mass_trap_Processed.csv`] version). 
 
 2. Make sure R is reading dates as date format; if not change the format to date.
 
@@ -99,30 +102,30 @@ PeterPaul$month <- factor(PeterPaul$month,levels=c(1:12))
 
 temperature_boxplot <-
   ggplot(PeterPaul, aes(x = month, y = temperature_C)) +
-  geom_boxplot(aes(color = lakename))+ ylab("Temperature (C)")+xlab("Month")+scale_x_discrete(drop=FALSE)+ theme(legend.position="top",axis.text.x = element_text(hjust = 1))
+  geom_boxplot(aes(color = lakename))+ ylab("Temperature (C)")+xlab("Month")+scale_x_discrete(drop=FALSE, labels= month.abb)+ theme(legend.position="right",axis.text.x = element_text(hjust = 1))+ggtitle("Temperature Distribution in Peter and Paul Lakes")
 print(temperature_boxplot)
 
 TP_boxplot <-
   ggplot(PeterPaul, aes(x = month, y = tp_ug)) +
-  geom_boxplot(aes(color = lakename))+ ylab("TP (ug)")+xlab("Month")+scale_x_discrete(drop=FALSE)+ theme(legend.position="none",axis.text.x = element_text( hjust = 1)) 
+  geom_boxplot(aes(color = lakename))+ ylab("TP (ug)")+xlab("Month")+scale_x_discrete(drop=FALSE, labels= month.abb)+ theme(legend.position="right",axis.text.x = element_text( hjust = 1)) +ggtitle("Total Phosphorus Distribution in Peter and Paul Lakes")
 print(TP_boxplot)
 
 
 TN_boxplot <-
   ggplot(PeterPaul, aes(x = month, y = tn_ug)) +
-  geom_boxplot(aes(color = lakename))+ylab("TN (ug)")+xlab("Month")+scale_x_discrete(drop=FALSE)+theme(legend.position="none",axis.text.x = element_text(hjust = 1))
+  geom_boxplot(aes(color = lakename))+ylab("TN (ug)")+xlab("Month")+scale_x_discrete(drop=FALSE,labels= month.abb)+theme(legend.position="right",axis.text.x = element_text(hjust = 1))+ggtitle("Total Nitrogen Distribution in Peter and Paul Lakes")
 print(TN_boxplot)
 
 
 
-cowplot <- plot_grid(temperature_boxplot, TP_boxplot, TN_boxplot, nrow = 3,align = 'v', rel_heights = c(12,9,9))
+cowplot <- plot_grid(temperature_boxplot+ggtitle(NULL)+ theme(legend.position="top"), TP_boxplot+ theme(legend.position="none")+ggtitle(NULL), TN_boxplot+theme(legend.position="none")+ggtitle(NULL), nrow = 3,align = 'v', rel_heights = c(12,9,9))
 print(cowplot)
 ```
 
 Question: What do you observe about the variables of interest over seasons 
 and between lakes? 
 
-> Answer: The Temperatures lower and upper quartiles seem to be relatively similar through comparison of months between Paul and Peter lake with Peter Lake having the slightly lower median for the most part. The variability for Peter lake in terms of total phosphorus seems to be grater than that of Paul lake due to the range and outliers. The ranges seem to be similar for total nitrogen, however, it appears as though Peter Lake might contain larger quantities of Nitrogen based on their higher quartiles. 
+> Answer: The Temperatures lower and upper quartiles seem to be relatively similar through comparison of months between Paul and Peter lake with Peter Lake having the slightly lower median for the most part. The variability for Peter lake in terms of total phosphorus seems to be grater than that of Paul lake due to the range and outliers. The ranges seem to be similar for total nitrogen, however, it appears as though Peter Lake might contain larger quantities of Nitrogen based on their higher quartiles. In general, it seems as though Peter lake has more nutrient quantities with larger variabilities and the nutrients for peter lake increase through the months whilst the nutrient levels fluctuate by decreasing through july and august for Paul lake.
 
 6. [Niwot Ridge] Plot a subset of the litter dataset by displaying only the 
 "Needles" functional group. Plot the dry mass of needle litter by date and 
@@ -145,4 +148,4 @@ ggplot(subset(NiwotRidge, functionalGroup="Needles"), aes(x=collectDate, y =dryM
 ```
 Question: Which of these plots (6 vs. 7) do you think is more effective, and why? 
 
-> Answer: Because these graphs are meant to compare dry mass in different classes, plot 6 is more effective as it allows us to more easily compare the distribution of dry mass in different years in relation to their classes. Plot 7 makes it difficult to as the years are spaced so far apart it is difficult to observe relative differences in dry mass that could be correlated to class. 
+> Answer: Because these graphs are meant to compare dry mass in different classes, plot 6 is more effective as it allows us to more easily compare the distribution of dry mass in different years in relation to their classes. Plot 7 makes it difficult to as the years are spaced so far apart it is difficult to observe relative differences in dry mass that could have a potential correlation to class. 
