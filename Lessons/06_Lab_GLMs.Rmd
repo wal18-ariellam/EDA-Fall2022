@@ -17,6 +17,8 @@ editor_options:
 ## Set up
 ```{r, message = FALSE}
 library(tidyverse)
+
+
 library(agricolae)   
 
 EPAair <- read.csv("./Data/Processed/EPAair_O3_PM25_NC1819_Processed.csv", stringsAsFactors = TRUE)
@@ -46,6 +48,18 @@ Create three plots, each with appropriately formatted axes and legends. Choose a
 
 ```{r}
 #Exercise 1:
+ozoneyear <- ggplot(EPAair,aes(x= Ozone, fill=as.factor(Year)))+geom_density(alpha=0.5)+scale_fill_manual(values = c("darkgreen", "darkblue")) + labs(x= "OZone AQI value", y="Density", fill = "")
+print(ozoneyear)
+
+boxplot <- 
+  ggplot(EPAair, aes(x= as.factor(Year), y= Ozone)) +geom_boxplot()+stat_summary(geom="text", fun = max, vjust=-1,size=4, label= c("b","a"))+labs(x= "", y= "Ozone AQI value")+ ylim(0,150)
+
+print(boxplot)
+
+violin <- 
+  ggplot(EPAair, aes(x= as.factor(Year), y= Ozone)) +geom_violin(draw_quantiles = .5)+stat_summary(geom="text", fun = max, vjust=-1,size=4, label= c("b","a"))+labs(x= "", y= "Ozone AQI value")+ ylim(0,150)
+
+print(violin)
 
 
 ```

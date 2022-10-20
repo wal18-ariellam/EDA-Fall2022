@@ -61,9 +61,10 @@ NiwotRidge$collectDate<- as.Date(NiwotRidge$collectDate, format = "%Y-%m-%d")
 
 ```{r}
 #3
-assignment_theme <- theme_light(base_size = 14) +
-  theme(axis.text = element_text(color = "black"), 
-        legend.position = "right")
+assignment_theme <- theme_light(base_size = 12) +
+  theme(axis.text = element_text(color = "black"))
+
+theme_set(assignment_theme)
 
 ```
 
@@ -79,7 +80,7 @@ limits using `xlim()` and/or `ylim()`).
 
 ```{r}
 #4
-ggplot(PeterPaul, aes(x=po4, y =tp_ug))+ assignment_theme +geom_point(aes(color=lakename))+xlim(c(0,55))+ geom_smooth(method=lm, color="black")+ylab("Total Phosphorus (ug)")+xlab("Phosphate")+ggtitle("Total Phosphorus and Phosphate in Peter and Paul Lakes")
+ggplot(PeterPaul, aes(x=po4, y =tp_ug))+ geom_point(aes(color=lakename))+xlim(c(0,55))+ geom_smooth(method=lm, color="black",se=FALSE)+ylab("Total Phosphorus (ug)")+xlab("Phosphate")+ggtitle("Total Phosphorus and Phosphate in Peter and Paul Lakes")
 
 ```
 
@@ -97,29 +98,31 @@ see <https://r-lang.com/month-abb-in-r-with-example>
 PeterPaul$month <- factor(PeterPaul$month,levels=c(1:12))
 
 temperature_boxplot <-
-  ggplot(PeterPaul, aes(x = month.abb[month], y = temperature_C)) +
-  geom_boxplot(aes(color = lakename))+ assignment_theme+ylab("Temperature (C)")+xlab("Month")+ggtitle("Temperature Distribution")
+  ggplot(PeterPaul, aes(x = month, y = temperature_C)) +
+  geom_boxplot(aes(color = lakename))+ ylab("Temperature (C)")+xlab("Month")+scale_x_discrete(drop=FALSE)+ theme(legend.position="top",axis.text.x = element_text(hjust = 1))
 print(temperature_boxplot)
 
 TP_boxplot <-
-  ggplot(PeterPaul, aes(x = month.abb[month], y = tp_ug)) +
-  geom_boxplot(aes(color = lakename))+ assignment_theme+ylab("TP (ug)")+xlab("Month")+ggtitle("Total Phosphorus (ug) Distribution")
+  ggplot(PeterPaul, aes(x = month, y = tp_ug)) +
+  geom_boxplot(aes(color = lakename))+ ylab("TP (ug)")+xlab("Month")+scale_x_discrete(drop=FALSE)+ theme(legend.position="none",axis.text.x = element_text( hjust = 1)) 
 print(TP_boxplot)
 
+
 TN_boxplot <-
-  ggplot(PeterPaul, aes(x = month.abb[month], y = tn_ug)) +
-  geom_boxplot(aes(color = lakename))+ assignment_theme+ylab("TN (ug)")+xlab("Month")+ggtitle("Total Nitrogen (ug) Distribution")
+  ggplot(PeterPaul, aes(x = month, y = tn_ug)) +
+  geom_boxplot(aes(color = lakename))+ylab("TN (ug)")+xlab("Month")+scale_x_discrete(drop=FALSE)+theme(legend.position="none",axis.text.x = element_text(hjust = 1))
 print(TN_boxplot)
 
 
 
-plot_grid(temperature_boxplot + theme(legend.position="none",axis.text.x = element_text(angle = 60, hjust = 1))+ggtitle(NULL), TP_boxplot + theme(legend.position="none",axis.text.x = element_text(angle = 60, hjust = 1))+ggtitle(NULL), TN_boxplot+ theme(legend.position="none",axis.text.x = element_text(angle = 60, hjust = 1))+ggtitle(NULL), nrow = 1,align = 'h')+scale_x_discrete(drop=FALSE)
+cowplot <- plot_grid(temperature_boxplot, TP_boxplot, TN_boxplot, nrow = 3,align = 'v', rel_heights = c(12,9,9))
+print(cowplot)
 ```
 
 Question: What do you observe about the variables of interest over seasons 
 and between lakes? 
 
-> Answer: 
+> Answer: The Temperatures lower and upper quartiles seem to be relatively similar through comparison of months between Paul and Peter lake with Peter Lake having the slightly lower median for the most part. The variability for Peter lake in terms of total phosphorus seems to be grater than that of Paul lake due to the range and outliers. The ranges seem to be similar for total nitrogen, however, it appears as though Peter Lake might contain larger quantities of Nitrogen based on their higher quartiles. 
 
 6. [Niwot Ridge] Plot a subset of the litter dataset by displaying only the 
 "Needles" functional group. Plot the dry mass of needle litter by date and 
@@ -142,4 +145,4 @@ ggplot(subset(NiwotRidge, functionalGroup="Needles"), aes(x=collectDate, y =dryM
 ```
 Question: Which of these plots (6 vs. 7) do you think is more effective, and why? 
 
-> Answer:
+> Answer: Because these graphs are meant to compare dry mass in different classes, plot 6 is more effective as it allows us to more easily compare the distribution of dry mass in different years in relation to their classes. Plot 7 makes it difficult to as the years are spaced so far apart it is difficult to observe relative differences in dry mass that could be correlated to class. 
