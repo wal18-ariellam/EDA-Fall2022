@@ -1,6 +1,6 @@
 ---
 title: "Assignment 6: GLMs (Linear Regressios, ANOVA, & t-tests)"
-author: "Student Name"
+author: "Ariel Lam"
 output: pdf_document
 geometry: margin=2.54cm
 editor_options: 
@@ -34,10 +34,21 @@ This exercise accompanies the lessons in Environmental Data Analytics on general
 
 ```{r setup}
 #1
+library(tidyverse)
+library(agricolae)
+library(ggplot2)
+library(lubridate)
 
+getwd()
+NTL_LTER <- read.csv("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv", stringsAsFactors = TRUE)
+NTL_LTER$sampledate<- as.Date(NTL_LTER$sampledate, format = "%m/%d/%y")
+NTL_LTER$Year4 <- month(NTL_LTER$sampledate)
 
 #2
+assignment_theme <- theme_light(base_size = 12) +
+  theme(axis.text = element_text(color = "black"))
 
+theme_set(assignment_theme)
 
 ```
 
@@ -46,8 +57,8 @@ Our first research question is: Does mean lake temperature recorded during July 
 
 3. State the null and alternative hypotheses for this question:
 > Answer:
-H0: 
-Ha: 
+H0: change in temp = 0
+Ha: 0 < change in temp > 0
 
 
 4.  Wrangle your NTL-LTER dataset with a pipe function so that the records meet the following criteria: 
@@ -59,9 +70,11 @@ Ha:
 
 ```{r scatterplot}
 #4
-
-
+NTL_LTER_TempDepth <- NTL_LTER %>% filter(month(NTL_LTER$sampledate) == "7") %>%
+  select(lakename, year4, daynum, depth, temperature_C) %>% drop_na()
+  
 #5
+ggplot(NTL_LTER_TempDepth, aes(x=depth, y= temperature_C))+geom_point()+geom_smooth(method=lm, se=FALSE)+ylim(c(0,35))
 
 
 ```
@@ -69,21 +82,22 @@ Ha:
 
 6. Interpret the figure. What does it suggest with regards to the response of temperature to depth? Do the distribution of points suggest about anything about the linearity of this trend?
 
-> Answer: 
+> Answer: As depth increases, the temperature seems to decrease until a certain threshold. The distribution of points suggest a linear trend with a large spread because the points seem to disperse from the line .
 
 
 7. Perform a linear regression to test the relationship and display the results
 
 ```{r linear.regression}
 #7
-
+temp_depth_regression <- lm(data = NTL_LTER_TempDepth, temperature_C ~ depth)
+summary(temp_depth_regression)
 
 ```
 
 
 8. Interpret your model results in words. Include how much of the variability in temperature is explained by changes in depth, the degrees of freedom on which this finding is based, and the statistical significance of the result. Also mention how much temperature is predicted to change for every 1m change in depth. 
 
-> Answer:
+> Answer: The linear model is based on 9726 degrees of freedom. The p-value of 2.2e-16 indicates that the relationship is significant as it is less than the significance value of 0.05. The low p-value indicates that the null hypothesis is false and it is possible to accept the alternative that the change in depth does correlate with a change in temperature. The adjusted R-squared value of .7387 indicates an acceptable goodness of fit for the linear model. The linear model indidcates that for every change in 1m of depth, the temperature will change by a magnitude of 1.9 degrees celcius. Because they are negatively correlated, an increase in depth leads to a decrease in temp and vice versa. 
 
 
 ---
@@ -99,10 +113,18 @@ Let's tackle a similar question from a different approach. Here, we want to expl
 ```{r temperature.model}
 #9
 
+temp_depth_model <- lm(data = NTL_LTER_TempDepth, 
+                   temperature_C ~year4+ daynum+ depth)
+step(temp_depth_model)
+
+
 
 
 #10
 
+temp_depth_multi_regression <- lm(data = NTL_LTER_TempDepth, 
+                   temperature_C ~ year4 + daynum+ depth)
+summary(temp_depth_multi_regression)
 
 ```
 
