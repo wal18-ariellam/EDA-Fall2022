@@ -97,7 +97,7 @@ summary(temp_depth_regression)
 
 8. Interpret your model results in words. Include how much of the variability in temperature is explained by changes in depth, the degrees of freedom on which this finding is based, and the statistical significance of the result. Also mention how much temperature is predicted to change for every 1m change in depth. 
 
-> Answer: The linear model is based on 9726 degrees of freedom. The p-value of 2.2e-16 indicates that the relationship is significant as it is less than the significance value of 0.05. The low p-value indicates that the null hypothesis is false and it is possible to accept the alternative that the change in depth does correlate with a change in temperature. The adjusted R-squared value of .7387 indicates an acceptable goodness of fit for the linear model. The linear model indidcates that for every change in 1m of depth, the temperature will change by a magnitude of 1.9 degrees celcius. Because they are negatively correlated, an increase in depth leads to a decrease in temp and vice versa. 
+> Answer: The linear model is based on 9726 degrees of freedom. The p-value of 2.2e-16 indicates that the relationship is significant as it is less than the significance value of 0.05. The low p-value indicates that the null hypothesis is false and it is possible to accept the alternative that the change in depth does correlate with a change in temperature. The adjusted R-squared value of .7387 indicates an acceptable goodness of fit for the linear model and states that 73.87% of variability is accounted for by this model. . The linear model indidcates that for every change in 1m of depth, the temperature will change by a magnitude of 1.9 degrees celcius. Because they are negatively correlated, an increase in depth leads to a decrease in temp and vice versa. 
 
 
 ---
@@ -130,7 +130,7 @@ summary(temp_depth_multi_regression)
 
 11. What is the final set of explanatory variables that the AIC method suggests we use to predict temperature in our multiple regression? How much of the observed variance does this model explain? Is this an improvement over the model using only depth as the explanatory variable?
 
-> Answer: 
+> Answer: AIC method suggests that all three varaibles: year4, daynum, and depth should be used to predict temperature in the multiple regression. 74.11% of the observed variance is accounted for by this model. This is only a slightly improvement over the model using only depth as the explanatory variable. 
 
 
 
@@ -141,7 +141,11 @@ summary(temp_depth_multi_regression)
 
 ```{r anova.model}
 #12
-
+Temp_ANOVA <- aov(data = NTL_LTER_TempDepth, temperature_C ~ lakename)
+summary(Temp_ANOVA)
+  
+ANOVA_lm <- lm(data = NTL_LTER_TempDepth, temperature_C ~ lakename)
+summary(ANOVA_lm)
 
 ```
 
@@ -155,7 +159,8 @@ summary(temp_depth_multi_regression)
 
 ```{r scatterplot.2}
 #14.
-
+graph_temp_depth <- ggplot(NTL_LTER_TempDepth, aes(x=depth, y=temperature_C))+geom_point(aes(color=lakename),alpha = 0.5)+geom_smooth(method="lm", se= FALSE)+ylim(c(0,35))+xlab("Depth (m)")+ylab("Temperature (C)")
+print(graph_temp_depth)
 
 ```
 
@@ -164,6 +169,7 @@ summary(temp_depth_multi_regression)
 ```{r tukey.test}
 #15
 
+TukeyHSD(Temp_ANOVA)
 
 ```
 
@@ -175,13 +181,14 @@ summary(temp_depth_multi_regression)
 
 17. If we were just looking at Peter Lake and Paul Lake. What's another test we might explore to see whether they have distinct mean temperatures? 
 
->Answer: 
+>Answer: If we were just looking at peter and paul lake, we could use a t-test because that test tests for one categorical explanatory (temperature) against two categories (peter and paul lake)
 
 
 
 18. Wrangle the July data to include only records for Crampton Lake and Ward Lake. Run the two-sample T-test on these data to determine whether their July temperature are same or different. What does the test say? Are the mean temperatures for the lakes equal? Does that match you answer for part 16?
 
 ```{r t.test}
+crampton_ward <- NTL_LTER_TempDepth
 
 ```
 
