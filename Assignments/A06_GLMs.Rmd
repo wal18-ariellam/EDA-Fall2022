@@ -12,7 +12,7 @@ editor_options:
 #For it to work, the "formatR" package needs to be installed
 
 #install.packages('formatR')
-knitr::opts_chunk$set(tidy.opts=list(width.cutoff=80), tidy=TRUE)
+knitr::opts_chunk$set(tidy.opts=list(width.cutoff=45), tidy=TRUE)
 ```
 
 ## OVERVIEW
@@ -32,7 +32,7 @@ This exercise accompanies the lessons in Environmental Data Analytics on general
 
 2. Build a ggplot theme and set it as your default theme.
 
-```{r setup}
+```{r start session}
 #1
 library(tidyverse)
 library(agricolae)
@@ -40,6 +40,7 @@ library(ggplot2)
 library(lubridate)
 
 getwd()
+setwd("/Users/ariellam/Desktop/EDA-Fall2022")
 NTL_LTER <- read.csv("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv", stringsAsFactors = TRUE)
 NTL_LTER$sampledate<- as.Date(NTL_LTER$sampledate, format = "%m/%d/%y")
 NTL_LTER$Year4 <- month(NTL_LTER$sampledate)
@@ -82,7 +83,7 @@ ggplot(NTL_LTER_TempDepth, aes(x=depth, y= temperature_C))+geom_point()+geom_smo
 
 6. Interpret the figure. What does it suggest with regards to the response of temperature to depth? Do the distribution of points suggest about anything about the linearity of this trend?
 
-> Answer: As depth increases, the temperature seems to decrease until a certain threshold. The distribution of points suggest a linear trend with a large spread because the points seem to disperse from the line .
+> Answer: As depth increases, the temperature seems to decrease until a certain threshold. The distribution of points suggest a linear trend with a large spread because the points seem to disperse from the line.
 
 
 7. Perform a linear regression to test the relationship and display the results
@@ -130,7 +131,7 @@ summary(temp_depth_multi_regression)
 
 11. What is the final set of explanatory variables that the AIC method suggests we use to predict temperature in our multiple regression? How much of the observed variance does this model explain? Is this an improvement over the model using only depth as the explanatory variable?
 
-> Answer: AIC method suggests that all three varaibles: year4, daynum, and depth should be used to predict temperature in the multiple regression. 74.11% of the observed variance is accounted for by this model. This is only a slightly improvement over the model using only depth as the explanatory variable. 
+> Answer: AIC method suggests that all three variables: year4, daynum, and depth should be used to predict temperature in the multiple regression. 74.11% of the observed variance is accounted for by this model. This is only a slightly improvement over the model using only depth as the explanatory variable. 
 
 
 
@@ -160,7 +161,7 @@ summary(ANOVA_lm)
 
 ```{r scatterplot.2}
 #14.
-graph_temp_depth <- ggplot(NTL_LTER_TempDepth, aes(x=depth, y=temperature_C))+geom_point(aes(color=lakename),alpha = 0.5)+geom_smooth(method="lm", se= FALSE)+ylim(c(0,35))+xlab("Depth (m)")+ylab("Temperature (C)")
+graph_temp_depth <- ggplot(NTL_LTER_TempDepth, aes(x=depth, y=temperature_C))+geom_point(aes(color=lakename),alpha = 0.5)+geom_smooth(method="lm", color="black", se= FALSE)+ylim(c(0,35))+xlab("Depth (m)")+ylab("Temperature (C)")
 print(graph_temp_depth)
 
 ```
