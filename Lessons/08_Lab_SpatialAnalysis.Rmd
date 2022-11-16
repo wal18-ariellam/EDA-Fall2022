@@ -125,12 +125,10 @@ wind_raw <-read.csv("https://raw.githubusercontent.com/ENV859/EnviroAtlasData/ma
 
 
 #Join to HUC_8 features
-
-
-
+huc8_sf_join = merge(x= huc8_sf, y= wind_raw, by.x= 'HUC_8', by.y= 'HUC_8')
 
 #View the outputs
-
+ggplot(data=huc8_sf_join)+ geom_sf(aes(fill=SumWindEnergy))+labs(title='Wind energy by HUC 8', fill='MW/year')
 
 
 ```
@@ -140,11 +138,15 @@ Aggregate the HUC_8 data on the `DWQ_Basin` attribute, computing the sum of the 
 
 ```{r Aggregate the HUC data on an attribute, saving as huc2_sf}
 #List the unique values in the DWQ_Basin field
-
-
+unique(huc8_sf$DWQ_Basin)
 
 #Summarize on DWQ Basin value
-
+huc2_sf <- huc8_sf %>% 
+  group_by(DWQ_Basin) %>%
+  summarize(
+    acres= sum(ACRES),
+    sq_miles= sum(SQ_MILES)
+  )
 
 
 #Map the data
